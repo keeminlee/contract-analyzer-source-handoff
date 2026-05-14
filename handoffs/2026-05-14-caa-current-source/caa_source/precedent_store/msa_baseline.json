@@ -1,0 +1,32 @@
+{
+  "doc_type": "msa",
+  "version": "0.1",
+  "required_clauses": [
+    "payment_terms",
+    "termination",
+    "limitation_of_liability",
+    "indemnity",
+    "data_protection"
+  ],
+  "baselines": {
+    "termination": {
+      "expectation": "Termination for convenience includes notice and wind-down obligations.",
+      "risk_if_missing": "medium"
+    },
+    "limitation_of_liability": {
+      "expectation": "General cap at 12 months fees with standard carve-outs.",
+      "risk_if_missing": "high"
+    },
+    "indemnity": {
+      "expectation": "Balanced indemnity obligations and defense-control mechanics.",
+      "risk_if_missing": "high"
+    }
+  },
+  "policy_rules": [
+    {
+      "id": "msa_indemnity_balance",
+      "severity": "high",
+      "description": "Indemnity scope must not exceed approved categories without escalation."
+    }
+  ]
+}

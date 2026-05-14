@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Execution Graph</title>
+<style>
+body { margin: 0; background: #f4f6f8; font-family: 'Segoe UI', 'Trebuchet MS', 'Arial', sans-serif; color: #17222f; }
+.page { max-width: 1200px; margin: 0 auto; padding: 16px; }
+.card { background: #fff; border: 1px solid #d8e0e8; border-radius: 12px; padding: 14px; }
+.muted { color: #556476; font-size: 12px; }
+.graph-legend { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+.legend-item { border-radius: 999px; border: 1px solid #d8e0e8; padding: 3px 10px; font-size: 12px; }
+.legend-exec { background: #e6f5eb; color: #1f6c45; border-color: #b9dfc8; }
+.legend-avail { background: #f2f5f8; color: #4d6177; border-color: #d2dce6; }
+.dag-svg { width: 100%; border: 1px solid #d2dce6; border-radius: 10px; background: #fbfdff; max-height: 560px; }
+.dag-node rect { stroke-width: 1.4; }
+.node-executed rect { fill: #e7f4ec; stroke: #2b7a52; }
+.node-available rect { fill: #f4f7fa; stroke: #97a8bb; stroke-dasharray: 4 3; }
+.node-label { font-size: 13px; font-weight: 700; fill: #1f2f43; }
+.node-sub { font-size: 12px; fill: #3d566f; }
+.edge-walked { stroke: #1f6c45; stroke-width: 2.5; fill: none; }
+.edge-inactive { stroke: #a8b6c5; stroke-width: 1.2; fill: none; }
+.arrow-fill { fill: #8ea2b6; }
+</style>
+</head>
+<body>
+<main class="page">
+<section class="card">
+<section class="row card graph-section">
+<h2>Execution Graph (Auto-Selected Path)</h2>
+<p class="muted">This graph shows the exact analysis path executed for this question.</p>
+<p class="muted">The contract structure is mapped automatically; the system then selects and runs the minimum set of steps needed.</p>
+<div class="graph-legend">
+<span class="legend-item legend-exec">Executed (highlighted): ran for this query</span>
+<span class="legend-item legend-avail">Available (faded): possible steps not needed here</span>
+</div>
+<svg class="dag-svg print" viewBox="0 0 1632.0 220.0" role="img" aria-label="Execution Graph">
+<defs>
+<marker id="arrowhead" markerWidth="10" markerHeight="8" refX="8" refY="4" orient="auto">
+<polygon points="0 0, 10 4, 0 8" class="arrow-fill" />
+</marker>
+</defs>
+<g class="dag-edges">
+<path class="edge-walked" d="M 1024.0 57.0 C 1050.0 57.0, 1050.0 57.0, 1076.0 57.0" marker-end="url(#arrowhead)" /><path class="edge-walked" d="M 244.0 57.0 C 270.0 57.0, 270.0 57.0, 296.0 57.0" marker-end="url(#arrowhead)" /><path class="edge-walked" d="M 504.0 57.0 C 530.0 57.0, 530.0 57.0, 556.0 57.0" marker-end="url(#arrowhead)" /><path class="edge-walked" d="M 764.0 57.0 C 790.0 57.0, 790.0 57.0, 816.0 57.0" marker-end="url(#arrowhead)" /><path class="edge-walked" d="M 1284.0 57.0 C 1310.0 57.0, 1310.0 57.0, 1336.0 57.0" marker-end="url(#arrowhead)" />
+</g>
+<g class="dag-nodes">
+<g class="dag-node node-executed">
+<rect x="36.0" y="26.0" width="208" height="62" rx="12" ry="12" />
+<text class="node-label" x="48.0" y="50.0">Identify Section Headings</text>
+<text class="node-sub" x="48.0" y="70.0">Output: 8 headings found</text>
+</g><g class="dag-node node-executed">
+<rect x="296.0" y="26.0" width="208" height="62" rx="12" ry="12" />
+<text class="node-label" x="308.0" y="50.0">Identify Numbered Clauses</text>
+<text class="node-sub" x="308.0" y="70.0">Output: 8 clauses found</text>
+</g><g class="dag-node node-executed">
+<rect x="556.0" y="26.0" width="208" height="62" rx="12" ry="12" />
+<text class="node-label" x="568.0" y="50.0">Extract Definitions</text>
+<text class="node-sub" x="568.0" y="70.0">Output: 0 definitions found</text>
+</g><g class="dag-node node-executed">
+<rect x="816.0" y="26.0" width="208" height="62" rx="12" ry="12" />
+<text class="node-label" x="828.0" y="50.0">Classify Clause Types</text>
+<text class="node-sub" x="828.0" y="70.0">Output: 16 classifications found</text>
+</g><g class="dag-node node-executed">
+<rect x="1076.0" y="26.0" width="208" height="62" rx="12" ry="12" />
+<text class="node-label" x="1088.0" y="50.0">Extract Contract Obligations</text>
+<text class="node-sub" x="1088.0" y="70.0">Output: 7 obligations found</text>
+</g><g class="dag-node node-executed">
+<rect x="1336.0" y="26.0" width="208" height="62" rx="12" ry="12" />
+<text class="node-label" x="1348.0" y="50.0">Compare Against Baseline Risk Policy</text>
+<text class="node-sub" x="1348.0" y="70.0">Output: 13 findings found</text>
+</g>
+</g>
+</svg>
+</section>
+<p class="muted">Scenario: credit_precision | Generated: Timestamp omitted (--no-timestamp)</p>
+</section>
+</main>
+</body>
+</html>

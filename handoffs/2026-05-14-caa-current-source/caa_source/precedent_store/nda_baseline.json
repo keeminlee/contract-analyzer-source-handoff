@@ -1,0 +1,32 @@
+{
+  "doc_type": "nda",
+  "version": "0.1",
+  "required_clauses": [
+    "confidentiality",
+    "term",
+    "return_or_destroy",
+    "limitation_of_liability",
+    "governing_law"
+  ],
+  "baselines": {
+    "limitation_of_liability": {
+      "expectation": "Cap at 12 months fees or explicit direct-damages-only limitation.",
+      "risk_if_missing": "high"
+    },
+    "term": {
+      "expectation": "2-5 year confidentiality survival depending on data class.",
+      "risk_if_missing": "medium"
+    },
+    "governing_law": {
+      "expectation": "Approved jurisdiction list.",
+      "risk_if_missing": "medium"
+    }
+  },
+  "policy_rules": [
+    {
+      "id": "nda_lol_cap_required",
+      "severity": "high",
+      "description": "Limitation of liability should include explicit cap or approved fallback language."
+    }
+  ]
+}

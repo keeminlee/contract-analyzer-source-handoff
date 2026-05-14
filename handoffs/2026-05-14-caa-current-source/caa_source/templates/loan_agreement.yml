@@ -1,0 +1,33 @@
+template_id: loan_agreement_v0_1
+doc_type: loan_agreement
+version: 0.1
+
+nodes:
+  - id: detect_headings
+    tool: spine_builder.detect_headings
+  - id: detect_numbered_clauses
+    tool: spine_builder.detect_numbered_clauses
+    depends_on: [detect_headings]
+  - id: extract_definitions
+    tool: spine_builder.extract_definitions
+    depends_on: [detect_numbered_clauses]
+  - id: clause_classifier
+    tool: clause_classifier.classify
+    depends_on: [extract_definitions]
+  - id: obligation_extractor
+    tool: obligation_extractor.extract
+    depends_on: [clause_classifier]
+  - id: playbook_compare
+    tool: playbook_compare.compare
+    depends_on: [obligation_extractor]
+
+routing:
+  overview:
+    execute: [detect_headings, detect_numbered_clauses, clause_classifier]
+  precision:
+    execute: [detect_headings, detect_numbered_clauses, extract_definitions, clause_classifier, obligation_extractor, playbook_compare]
+
+citation_policy:
+  require_node_id: true
+  require_span: true
+  no_citation_no_answer: true

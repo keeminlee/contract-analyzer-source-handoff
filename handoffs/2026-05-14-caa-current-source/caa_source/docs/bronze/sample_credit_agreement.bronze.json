@@ -1,0 +1,16 @@
+{
+  "source": {
+    "path": "C:\\Users\\n369233\\OneDrive - MUFG Ltd\\Desktop\\Contracts\\contract-analyst-agent-mockup\\docs\\cache\\sample_credit_agreement.txt",
+    "name": "sample_credit_agreement.txt",
+    "extension": ".txt",
+    "size_bytes": 1085,
+    "modified_utc": "2026-03-05T17:38:28.469754+00:00"
+  },
+  "extracted_text": "Section 1 Definitions\n1.1 Conditions Precedent. Conditions precedent to initial borrowing include delivery of constitutional documents and officer certificates.\n\nSection 2 Representations\n2.1 Representations and Warranties. The Borrower represents and warrants due organization, authority, and enforceability.\n\nSection 3 Payment Mechanics\n3.1 Payment Terms. Principal and accrued interest rate amounts are payable monthly; prepayment is permitted subject to fees.\n\nSection 4 Covenants\n4.1 Financial Covenants. Borrower shall maintain leverage ratio and debt service coverage ratio thresholds.\n\nSection 5 Security\n5.1 Collateral and Security Interest. Borrower grants a first priority security interest and lien over collateral.\n\nSection 6 Defaults\n6.1 Events of Default. Non-payment, covenant breach, and cross default trigger acceleration remedies.\n\nSection 7 Governing Law\n7.1 Governing Law and Venue. This Agreement is governed by New York law and venue.\n\nSection 8 Guarantee\n8.1 Guarantee. Parent provides an unconditional guarantee of borrower obligations.\n",
+  "tables": [],
+  "metadata": {
+    "extractor": "txt_reader",
+    "extracted_utc": "2026-03-05T19:47:07.934048+00:00",
+    "version": "0.1"
+  }
+}

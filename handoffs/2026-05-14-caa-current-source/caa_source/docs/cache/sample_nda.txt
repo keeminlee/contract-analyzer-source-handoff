@@ -1,0 +1,10 @@
+Section 1 Purpose
+1.1 Confidentiality. Each party shall keep Confidential Information strictly confidential.
+
+Section 2 Term
+2.1 Termination. Either party may terminate for material breach with thirty days notice.
+
+Section 3 Liability
+3.1 Limitation of Liability. Neither party shall be liable for indirect damages.
+
+"Confidential Information" means non-public information disclosed by either party.

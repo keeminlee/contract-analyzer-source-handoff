@@ -1,0 +1,16 @@
+{
+  "source": {
+    "path": "G:\\CAA\\docs\\cache\\sample_nda.txt",
+    "name": "sample_nda.txt",
+    "extension": ".txt",
+    "size_bytes": 410,
+    "modified_utc": "2026-02-18T18:54:25.736920+00:00"
+  },
+  "extracted_text": "Section 1 Purpose\n1.1 Confidentiality. Each party shall keep Confidential Information strictly confidential.\n\nSection 2 Term\n2.1 Termination. Either party may terminate for material breach with thirty days notice.\n\nSection 3 Liability\n3.1 Limitation of Liability. Neither party shall be liable for indirect damages.\n\n\"Confidential Information\" means non-public information disclosed by either party.\n",
+  "tables": [],
+  "metadata": {
+    "extractor": "txt_reader",
+    "extracted_utc": "2026-02-18T19:42:48.530569+00:00",
+    "version": "0.1"
+  }
+}

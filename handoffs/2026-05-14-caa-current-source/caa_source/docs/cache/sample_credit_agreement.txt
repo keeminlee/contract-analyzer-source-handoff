@@ -1,0 +1,23 @@
+Section 1 Definitions
+1.1 Conditions Precedent. Conditions precedent to initial borrowing include delivery of constitutional documents and officer certificates.
+
+Section 2 Representations
+2.1 Representations and Warranties. The Borrower represents and warrants due organization, authority, and enforceability.
+
+Section 3 Payment Mechanics
+3.1 Payment Terms. Principal and accrued interest rate amounts are payable monthly; prepayment is permitted subject to fees.
+
+Section 4 Covenants
+4.1 Financial Covenants. Borrower shall maintain leverage ratio and debt service coverage ratio thresholds.
+
+Section 5 Security
+5.1 Collateral and Security Interest. Borrower grants a first priority security interest and lien over collateral.
+
+Section 6 Defaults
+6.1 Events of Default. Non-payment, covenant breach, and cross default trigger acceleration remedies.
+
+Section 7 Governing Law
+7.1 Governing Law and Venue. This Agreement is governed by New York law and venue.
+
+Section 8 Guarantee
+8.1 Guarantee. Parent provides an unconditional guarantee of borrower obligations.

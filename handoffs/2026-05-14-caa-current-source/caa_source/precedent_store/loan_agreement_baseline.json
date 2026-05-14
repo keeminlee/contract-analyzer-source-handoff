@@ -1,0 +1,55 @@
+{
+  "doc_type": "loan_agreement",
+  "version": "0.1",
+  "required_clauses": [
+    "payment_terms",
+    "event_of_default",
+    "financial_covenants",
+    "collateral_security",
+    "representations_and_warranties",
+    "governing_law",
+    "guarantees"
+  ],
+  "baselines": {
+    "payment_terms": {
+      "expectation": "Repayment schedule, prepayment, and late-payment consequences are explicit.",
+      "risk_if_missing": "high"
+    },
+    "event_of_default": {
+      "expectation": "Default and cure/acceleration rights are documented.",
+      "risk_if_missing": "high"
+    },
+    "financial_covenants": {
+      "expectation": "Ongoing financial covenant package is measurable and enforceable.",
+      "risk_if_missing": "high"
+    },
+    "collateral_security": {
+      "expectation": "Security interests and collateral maintenance requirements are explicit.",
+      "risk_if_missing": "high"
+    },
+    "representations_and_warranties": {
+      "expectation": "Borrower representations are current, complete, and survival terms are clear.",
+      "risk_if_missing": "medium"
+    },
+    "governing_law": {
+      "expectation": "Governing law and venue are specified.",
+      "risk_if_missing": "medium"
+    },
+    "guarantees": {
+      "expectation": "Guarantee scope, guarantor obligations, and release mechanics are explicit.",
+      "risk_if_missing": "medium"
+    }
+  },
+  "policy_rules": [
+    {
+      "id": "loan_repayment_obligation_required",
+      "severity": "high",
+      "description": "Loan agreements must include enforceable repayment obligations."
+    },
+    {
+      "id": "loan_default_remedies_required",
+      "severity": "high",
+      "description": "Loan agreements must define default remedies and notice mechanics."
+    }
+  ]
+}

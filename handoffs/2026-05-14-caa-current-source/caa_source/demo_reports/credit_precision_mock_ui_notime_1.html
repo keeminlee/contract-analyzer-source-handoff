@@ -1,0 +1,1004 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contract Analyst Agent - Evidence View</title>
+  <style>
+    :root {
+      --bg: #f4f6f8;
+      --card: #ffffff;
+      --ink: #17222f;
+      --muted: #556476;
+      --line: #d8e0e8;
+      --accent: #0a5c7a;
+      --accent-soft: #d9eef5;
+      --ok: #246b4a;
+      --warn: #9a6700;
+      --high: #a72b2b;
+      --font: "Segoe UI", "Trebuchet MS", "Arial", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: radial-gradient(circle at 15% 5%, #e7f3fa 0%, var(--bg) 44%); color: var(--ink); font-family: var(--font); }
+    .page { max-width: 1320px; margin: 0 auto; padding: 18px; }
+    .header { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px; box-shadow: 0 10px 26px rgba(23, 34, 47, 0.06); }
+    .title { font-size: 28px; margin: 0; letter-spacing: 0.2px; }
+    .subtitle { margin: 4px 0 0; color: var(--muted); }
+    .meta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+    .badge { border-radius: 999px; font-size: 12px; padding: 4px 10px; font-weight: 600; border: 1px solid transparent; }
+    .badge-type { background: #edf5ff; color: #184b85; border-color: #b7cff0; }
+    .badge-mode { background: #ecf8ef; color: #1a6c3f; border-color: #badfca; }
+    .badge-conf { background: #fff5e9; color: #8f4e00; border-color: #e8c8a2; }
+    .badge-ev { background: #e6f5eb; color: #1f6c45; border-color: #b9dfc8; }
+    .badge-ref { background: #edf0f8; color: #35507f; border-color: #c8d2e8; }
+
+    .callouts { margin-top: 12px; display: grid; grid-template-columns: repeat(3, minmax(180px, 1fr)); gap: 10px; }
+    .callout { border: 1px solid var(--line); background: #fbfdff; border-radius: 10px; padding: 10px 12px; }
+    .callout strong { display: block; font-size: 13px; }
+    .callout span { color: var(--muted); font-size: 12px; }
+
+    .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-top: 14px; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px; }
+    h2 { margin: 0 0 10px; font-size: 18px; }
+    h3 { margin: 14px 0 8px; font-size: 15px; }
+    p { margin: 0 0 10px; line-height: 1.45; }
+    ul { margin: 0; padding-left: 18px; }
+    li { margin: 0 0 6px; }
+    .muted { color: var(--muted); font-size: 12px; }
+    .chip { border: 1px solid var(--line); border-radius: 6px; padding: 2px 8px; font-size: 12px; background: #f8fafc; }
+
+    .answer-preview { background: linear-gradient(125deg, #f9fcff 0%, #edf6ff 100%); border: 1px solid #c8d9ec; border-radius: 10px; padding: 12px; margin-bottom: 12px; }
+    .answer-preview .headline { font-weight: 700; margin-bottom: 6px; }
+
+    .map-section { border-top: 1px solid #eff2f6; padding-top: 8px; margin-top: 8px; }
+    .map-section:first-child { border-top: 0; margin-top: 0; padding-top: 0; }
+    .map-clause { margin-left: 12px; display: block; color: #2e3e52; padding: 4px 0; }
+    .map-badges { display: inline-flex; gap: 6px; flex-wrap: wrap; }
+    .is-retrieved { background: #f3fbf5; border-radius: 8px; padding: 6px 8px; }
+
+        .chunk-card { border: 1px solid #ccd8e5; border-radius: 10px; padding: 12px; margin-bottom: 14px; background: #fdfefe; }
+    .chunk-card:last-child { margin-bottom: 0; }
+        .chunk-anchor { display: grid; gap: 3px; margin-bottom: 8px; font-size: 13px; color: #1e3244; }
+        .excerpt {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+    .chunk-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+        .diag-meta { font-size: 11px; }
+
+    .row { margin-top: 14px; }
+    .stepper { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+    .step { display: grid; grid-template-columns: 34px 1fr; gap: 10px; align-items: start; border: 1px solid var(--line); border-radius: 10px; padding: 10px; background: #fbfdff; }
+    .step-index { width: 28px; height: 28px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); display: flex; align-items: center; justify-content: center; font-weight: 700; }
+
+    .findings { display: grid; gap: 8px; }
+    .finding { border: 1px solid var(--line); border-radius: 10px; padding: 10px; background: #fff; }
+    .finding-msg { margin-top: 6px; margin-bottom: 5px; }
+    .severity { border-radius: 999px; padding: 3px 8px; font-size: 11px; font-weight: 700; }
+    .sev-info { background: #ecf7f0; color: var(--ok); }
+    .sev-warn { background: #fff5e8; color: var(--warn); }
+    .sev-high { background: #feeced; color: var(--high); }
+
+    details { margin-top: 10px; }
+    details summary { cursor: pointer; color: #1d4f80; font-weight: 600; }
+    pre { white-space: pre-wrap; word-break: break-word; background: #f7f9fc; border: 1px solid var(--line); border-radius: 8px; padding: 10px; max-height: 260px; overflow: auto; }
+    .footer { margin-top: 14px; color: var(--muted); font-size: 12px; border-top: 1px solid var(--line); padding-top: 10px; }
+
+    .print-mode .page { max-width: 1280px; padding: 10px; }
+    .print-mode .header, .print-mode .card { border-radius: 8px; }
+    .print-mode .grid3 { gap: 10px; }
+    .print-mode body { overflow: hidden; }
+    .print-mode .excerpt { -webkit-line-clamp: 2; }
+    .print-mode .diag-meta { display: none; }
+
+    .tree-card { overflow-x: auto; }
+    .tree-wrap { border: 1px solid #d8e0e8; border-radius: 10px; background: #fbfdff; padding: 8px; overflow: auto; }
+    .tree-legend { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 10px; }
+    .legend-item { font-size: 12px; color: #425365; display: inline-flex; align-items: center; gap: 6px; }
+    .legend-swatch { width: 12px; height: 12px; border-radius: 3px; border: 1px solid #b9c2cc; display: inline-block; }
+    .sw-ev { background: #e7f6ec; border-color: #54a173; }
+    .sw-ref { background: #edf2fb; border-color: #6e87b5; }
+    .sw-ut { background: #f3f5f7; border-color: #c4ccd5; }
+    .legend-line { width: 16px; height: 0; border-top: 2px solid #4f9c70; display: inline-block; }
+
+    @media (max-width: 1120px) {
+      .grid3 { grid-template-columns: 1fr; }
+      .callouts { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body class="print-mode">
+  <main class="page">
+    <section class="header">
+      <h1 class="title">Contract Analyst Agent - Evidence View</h1>
+      <p class="subtitle">Clause-by-Clause Contract Intelligence | Traceable, Structured, and Enterprise-Ready</p>
+      <div class="meta">
+        <span class="badge badge-type">Document Type: Credit Agreement</span>
+        <span class="badge badge-mode">Analysis Mode: Precision Review</span>
+        <span class="badge badge-conf">Confidence: 84%</span>
+      </div>
+      <div class="callouts">
+        <div class="callout"><strong>Structured reading</strong><span>Mapped into sections + clauses (like a human reviewer).</span></div>
+        <div class="callout"><strong>Evidence-first</strong><span>Only 3 evidence snippets used for this answer.</span></div>
+        <div class="callout"><strong>Traceable</strong><span>Every finding links to an exact clause span.</span></div>
+      </div>
+    </section>
+
+        
+        <section class="grid3">
+            <article class="card">
+                <h2>Ask and Routing</h2>
+                <div class="answer-preview">
+                    <div class="headline">Answer Preview</div>
+                    <p>Events of Default language was found and verified against baseline risk checks. Summary: 12 checks evaluated; 0 flagged as missing; 0 high-risk flags.</p>
+                    <p class="muted">Backed by citations: chunk_6 (Section 6.1 (6.1)), chunk_1 (Section 1.1 (1.1)), chunk_3 (Section 3.1 (3.1))</p>
+                </div>
+                <h3>Query</h3>
+                <p>Quote events of default and compare against baseline risk requirements.</p>
+                <h3>How the system interprets the request</h3>
+                <p class="muted">Determine contract type, choose review depth, and target relevant sections.</p>
+                <h3>Why this path was chosen</h3>
+                <ul>
+                    <li>Document identified as a Credit Agreement based on contractual language cues.</li><li>Request asks for precise, citation-backed clause language.</li><li>Comparison against risk baseline requires precision review and policy diff checks.</li>
+                </ul>
+                <h3>Selected Steps</h3>
+                <p class="muted">detect_headings -&gt; detect_numbered_clauses -&gt; extract_definitions -&gt; clause_classifier -&gt; obligation_extractor -&gt; playbook_compare</p>
+            </article>
+
+            <article class="card">
+                <h2>Document Map</h2>
+                <p class="muted">Contracts are mapped into sections and clauses before analysis. Highlighted rows indicate evidence-used and referenced text.</p>
+                <div class="map-section is-retrieved"><div><strong>Section 1 - Definitions</strong></div><div class="map-badges"><span class="badge badge-ev">Evidence Used</span></div><div class="map-clause is-retrieved"><span>1.1 Conditions Precedent. Conditions precedent to initial borrowing include delivery of constitutional documents and officer certificates.</span></div></div><div class="map-section"><div><strong>Section 2 - Representations</strong></div><div class="map-badges"><span class="badge badge-ref">Referenced</span></div><div class="map-clause"><span>2.1 Representations and Warranties. The Borrower represents and warrants due organization, authority, and enforceability.</span></div></div><div class="map-section is-retrieved"><div><strong>Section 3 - Payment Mechanics</strong></div><div class="map-badges"><span class="badge badge-ev">Evidence Used</span><span class="badge badge-ref">Referenced</span></div><div class="map-clause is-retrieved"><span>3.1 Payment Terms. Principal and accrued interest rate amounts are payable monthly; prepayment is permitted subject to fees.</span></div></div><div class="map-section"><div><strong>Section 4 - Covenants</strong></div><div class="map-badges"><span class="badge badge-ref">Referenced</span></div><div class="map-clause"><span>4.1 Financial Covenants. Borrower shall maintain leverage ratio and debt service coverage ratio thresholds.</span></div></div><div class="map-section"><div><strong>Section 5 - Security</strong></div><div class="map-badges"></div><div class="map-clause"><span>5.1 Collateral and Security Interest. Borrower grants a first priority security interest and lien over collateral.</span></div></div><div class="map-section is-retrieved"><div><strong>Section 6 - Defaults</strong></div><div class="map-badges"><span class="badge badge-ev">Evidence Used</span><span class="badge badge-ref">Referenced</span></div><div class="map-clause is-retrieved"><span>6.1 Events of Default. Non-payment, covenant breach, and cross default trigger acceleration remedies.</span></div></div><div class="map-section"><div><strong>Section 7 - Governing Law</strong></div><div class="map-badges"><span class="badge badge-ref">Referenced</span></div><div class="map-clause"><span>7.1 Governing Law and Venue. This Agreement is governed by New York law and venue.</span></div></div><div class="map-section"><div><strong>Section 8 - Guarantee</strong></div><div class="map-badges"></div><div class="map-clause"><span>8.1 Guarantee. Parent provides an unconditional guarantee of borrower obligations.</span></div></div>
+            </article>
+
+            <article class="card">
+                <h2>Evidence Used (Top 3)</h2>
+                <p class="muted">Top evidence passages selected from the contract map and used to generate the answer.</p>
+                <article class="chunk-card">
+<div class="chunk-anchor">
+<div><strong>Clause:</strong> 6.1 Events of Default. Non-payment, covenant breach, and cross default trigger acceleration remedies.</div>
+<div><strong>Span:</strong> 729-849</div>
+<div><strong>Node:</strong> auto_6</div>
+</div>
+<p class="excerpt">Section 6 Defaults
+6.1 Events of Default. Non-payment, covenant breach, and cross default trigger acceleration remedies.</p>
+<div class="chunk-meta">
+<span class="chip">all nodes: auto_6</span>
+<span class="diag-meta muted">chunk_id: chunk_6 | score: 0.4124</span>
+</div>
+</article><article class="chunk-card">
+<div class="chunk-anchor">
+<div><strong>Clause:</strong> 1.1 Conditions Precedent. Conditions precedent to initial borrowing include delivery of constitutional documents and officer certificates.</div>
+<div><strong>Span:</strong> 0-160</div>
+<div><strong>Node:</strong> auto_1</div>
+</div>
+<p class="excerpt">Section 1 Definitions
+1.1 Conditions Precedent. Conditions precedent to initial borrowing include delivery of constitutional documents and officer certificates.</p>
+<div class="chunk-meta">
+<span class="chip">all nodes: auto_1</span>
+<span class="diag-meta muted">chunk_id: chunk_1 | score: 0.2132</span>
+</div>
+</article><article class="chunk-card">
+<div class="chunk-anchor">
+<div><strong>Clause:</strong> 3.1 Payment Terms. Principal and accrued interest rate amounts are payable monthly; prepayment is permitted subject to fees.</div>
+<div><strong>Span:</strong> 311-463</div>
+<div><strong>Node:</strong> auto_3</div>
+</div>
+<p class="excerpt">Section 3 Payment Mechanics
+3.1 Payment Terms. Principal and accrued interest rate amounts are payable monthly; prepayment is permitted subject to fees.</p>
+<div class="chunk-meta">
+<span class="chip">all nodes: auto_3</span>
+<span class="diag-meta muted">chunk_id: chunk_3 | score: 0.11304</span>
+</div>
+</article>
+            </article>
+        </section>
+
+        <section class="row card tree-card">
+<h2>Contract Map (Nodes Touched)</h2>
+<p class="muted">We map the contract into sections and clauses automatically. Highlighted nodes show the exact clauses used to generate this answer.</p>
+<p class="muted">This map is built automatically from the raw document (no manual tagging). Highlighted nodes show exactly what the model read to produce the answer.</p>
+<div class="tree-legend">
+<span class="legend-item"><span class="legend-swatch sw-ev"></span>Evidence Used (green): used in response generation</span>
+<span class="legend-item"><span class="legend-swatch sw-ref"></span>Referenced (blue): cited in findings</span>
+<span class="legend-item"><span class="legend-swatch sw-ut"></span>Untouched (gray): present but not used</span>
+<span class="legend-item"><span class="legend-line"></span>Evidence Path: root to evidence-used nodes</span>
+</div>
+<div class="tree-wrap">
+<svg class="tree-svg" width="1160" height="520" viewBox="0 0 1160 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Contract map tree"><defs><style>.edge{stroke:#c8d0da;stroke-width:1.2;fill:none}.edge-path{stroke:#4f9c70;stroke-width:2.0;fill:none}.edge-spine{stroke:#d6dde5;stroke-width:1.1;fill:none}.node-title{font-family:Segoe UI,Trebuchet MS,Arial,sans-serif;font-size:12px;font-weight:600}.node-sub{font-family:Segoe UI,Trebuchet MS,Arial,sans-serif;font-size:11px}</style></defs><line x1="580.0" y1="124.0" x2="580.0" y2="172.0" class="edge-spine"/><line x1="128.9" y1="172.0" x2="1031.1" y2="172.0" class="edge-spine"/><line x1="128.9" y1="172.0" x2="128.9" y2="200.0" class="edge-path"/><line x1="128.9" y1="244.0" x2="128.9" y2="340.0" class="edge-path"/><line x1="257.8" y1="172.0" x2="257.8" y2="200.0" class="edge"/><line x1="257.8" y1="244.0" x2="257.8" y2="340.0" class="edge"/><line x1="386.7" y1="172.0" x2="386.7" y2="200.0" class="edge-path"/><line x1="386.7" y1="244.0" x2="386.7" y2="340.0" class="edge-path"/><line x1="515.6" y1="172.0" x2="515.6" y2="200.0" class="edge"/><line x1="515.6" y1="244.0" x2="515.6" y2="340.0" class="edge"/><line x1="644.4" y1="172.0" x2="644.4" y2="200.0" class="edge"/><line x1="644.4" y1="244.0" x2="644.4" y2="340.0" class="edge"/><line x1="773.3" y1="172.0" x2="773.3" y2="200.0" class="edge-path"/><line x1="773.3" y1="244.0" x2="773.3" y2="340.0" class="edge-path"/><line x1="902.2" y1="172.0" x2="902.2" y2="200.0" class="edge"/><line x1="902.2" y1="244.0" x2="902.2" y2="340.0" class="edge"/><line x1="1031.1" y1="172.0" x2="1031.1" y2="200.0" class="edge"/><line x1="1031.1" y1="244.0" x2="1031.1" y2="340.0" class="edge"/><rect x="460.0" y="80" width="240" height="44" rx="9" fill="#f2f8f4" stroke="#9cc8ad" stroke-width="1.4"/>
+<text x="472.0" y="98" class="node-title" fill="#2a4b38">Contract Document</text>
+<text x="472.0" y="112" class="node-sub" fill="#2a4b38">Contains Evidence</text><rect x="68.9" y="200.0" width="120" height="44" rx="8" fill="#e7f6ec" stroke="#54a173" stroke-width="1.2"/>
+<text x="76.9" y="218.0" class="node-title" fill="#143f2a">Section 1 - Definitio...</text>
+<text x="76.9" y="233.0" class="node-sub" fill="#143f2a">Evidence Used</text><rect x="63.9" y="340.0" width="130" height="36" rx="7" fill="#e7f6ec" stroke="#54a173" stroke-width="1"/>
+<text x="71.9" y="356.0" class="node-title" fill="#143f2a">1.1 Conditions Precedent. C...</text>
+<text x="71.9" y="369.0" class="node-sub" fill="#143f2a">Evidence Used</text><rect x="197.8" y="200.0" width="120" height="44" rx="8" fill="#edf2fb" stroke="#6e87b5" stroke-width="1.2"/>
+<text x="205.8" y="218.0" class="node-title" fill="#243e66">Section 2 - Represent...</text>
+<text x="205.8" y="233.0" class="node-sub" fill="#243e66">Referenced</text><rect x="192.8" y="340.0" width="130" height="36" rx="7" fill="#edf2fb" stroke="#6e87b5" stroke-width="1"/>
+<text x="200.8" y="356.0" class="node-title" fill="#243e66">2.1 Representations and War...</text>
+<text x="200.8" y="369.0" class="node-sub" fill="#243e66">Referenced</text><rect x="326.7" y="200.0" width="120" height="44" rx="8" fill="#e7f6ec" stroke="#54a173" stroke-width="1.2"/>
+<text x="334.7" y="218.0" class="node-title" fill="#143f2a">Section 3 - Payment M...</text>
+<text x="334.7" y="233.0" class="node-sub" fill="#143f2a">Evidence Used</text><rect x="321.7" y="340.0" width="130" height="36" rx="7" fill="#e7f6ec" stroke="#54a173" stroke-width="1"/>
+<text x="329.7" y="356.0" class="node-title" fill="#143f2a">3.1 Payment Terms. Principa...</text>
+<text x="329.7" y="369.0" class="node-sub" fill="#143f2a">Evidence Used</text><rect x="455.6" y="200.0" width="120" height="44" rx="8" fill="#edf2fb" stroke="#6e87b5" stroke-width="1.2"/>
+<text x="463.6" y="218.0" class="node-title" fill="#243e66">Section 4 - Covenants</text>
+<text x="463.6" y="233.0" class="node-sub" fill="#243e66">Referenced</text><rect x="450.6" y="340.0" width="130" height="36" rx="7" fill="#edf2fb" stroke="#6e87b5" stroke-width="1"/>
+<text x="458.6" y="356.0" class="node-title" fill="#243e66">4.1 Financial Covenants. Bo...</text>
+<text x="458.6" y="369.0" class="node-sub" fill="#243e66">Referenced</text><rect x="584.4" y="200.0" width="120" height="44" rx="8" fill="#edf2fb" stroke="#6e87b5" stroke-width="1.2"/>
+<text x="592.4" y="218.0" class="node-title" fill="#243e66">Section 5 - Security</text>
+<text x="592.4" y="233.0" class="node-sub" fill="#243e66">Referenced</text><rect x="579.4" y="340.0" width="130" height="36" rx="7" fill="#edf2fb" stroke="#6e87b5" stroke-width="1"/>
+<text x="587.4" y="356.0" class="node-title" fill="#243e66">5.1 Collateral and Security...</text>
+<text x="587.4" y="369.0" class="node-sub" fill="#243e66">Referenced</text><rect x="713.3" y="200.0" width="120" height="44" rx="8" fill="#e7f6ec" stroke="#54a173" stroke-width="1.2"/>
+<text x="721.3" y="218.0" class="node-title" fill="#143f2a">Section 6 - Defaults</text>
+<text x="721.3" y="233.0" class="node-sub" fill="#143f2a">Evidence Used</text><rect x="708.3" y="340.0" width="130" height="36" rx="7" fill="#e7f6ec" stroke="#54a173" stroke-width="1"/>
+<text x="716.3" y="356.0" class="node-title" fill="#143f2a">6.1 Events of Default. Non-...</text>
+<text x="716.3" y="369.0" class="node-sub" fill="#143f2a">Evidence Used</text><rect x="842.2" y="200.0" width="120" height="44" rx="8" fill="#edf2fb" stroke="#6e87b5" stroke-width="1.2"/>
+<text x="850.2" y="218.0" class="node-title" fill="#243e66">Section 7 - Governing...</text>
+<text x="850.2" y="233.0" class="node-sub" fill="#243e66">Referenced</text><rect x="837.2" y="340.0" width="130" height="36" rx="7" fill="#edf2fb" stroke="#6e87b5" stroke-width="1"/>
+<text x="845.2" y="356.0" class="node-title" fill="#243e66">7.1 Governing Law and Venue...</text>
+<text x="845.2" y="369.0" class="node-sub" fill="#243e66">Referenced</text><rect x="971.1" y="200.0" width="120" height="44" rx="8" fill="#f3f5f7" stroke="#c4ccd5" stroke-width="1.2"/>
+<text x="979.1" y="218.0" class="node-title" fill="#5b6675">Section 8 - Guarantee</text>
+<text x="979.1" y="233.0" class="node-sub" fill="#5b6675">Untouched</text><rect x="966.1" y="340.0" width="130" height="36" rx="7" fill="#f3f5f7" stroke="#c4ccd5" stroke-width="1"/>
+<text x="974.1" y="356.0" class="node-title" fill="#5b6675">8.1 Guarantee. Parent provi...</text>
+<text x="974.1" y="369.0" class="node-sub" fill="#5b6675">Untouched</text></svg>
+</div>
+</section>
+
+        <section class="row card">
+            <h2>DAG Execution Trace</h2>
+            <p class="muted">Transparent, reproducible sequence of analysis steps.</p>
+            <ol class="stepper">
+                <li class="step">
+<div class="step-index">1</div>
+<div>
+<div><strong>Identify Section Headings</strong></div>
+<div class="muted">Find top-level sections in the contract.</div>
+<div class="muted">step_id: detect_headings | result_count: 8</div>
+</div>
+</li><li class="step">
+<div class="step-index">2</div>
+<div>
+<div><strong>Identify Numbered Clauses</strong></div>
+<div class="muted">Locate clause numbering such as 6.1 and 7.1.</div>
+<div class="muted">step_id: detect_numbered_clauses | result_count: 8</div>
+</div>
+</li><li class="step">
+<div class="step-index">3</div>
+<div>
+<div><strong>Extract Definitions</strong></div>
+<div class="muted">Capture defined terms that shape clause meaning.</div>
+<div class="muted">step_id: extract_definitions | result_count: 0</div>
+</div>
+</li><li class="step">
+<div class="step-index">4</div>
+<div>
+<div><strong>Classify Clause Types</strong></div>
+<div class="muted">Label clauses by legal function (defaults, covenants, payment, etc.).</div>
+<div class="muted">step_id: clause_classifier | result_count: 16</div>
+</div>
+</li><li class="step">
+<div class="step-index">5</div>
+<div>
+<div><strong>Extract Contract Obligations</strong></div>
+<div class="muted">Identify action-oriented obligations and responsibilities.</div>
+<div class="muted">step_id: obligation_extractor | result_count: 7</div>
+</div>
+</li><li class="step">
+<div class="step-index">6</div>
+<div>
+<div><strong>Compare Against Baseline Risk Policy</strong></div>
+<div class="muted">Check detected clauses against baseline requirements and flag gaps.</div>
+<div class="muted">step_id: playbook_compare | result_count: 13</div>
+</div>
+</li>
+            </ol>
+        </section>
+
+        <section class="row card">
+            <h2>Findings</h2>
+            <p class="muted">Severity-tagged findings with citation references.</p>
+            <div class="findings">
+                <article class="finding">
+<span class="severity sev-info">INFO</span>
+<div class="finding-msg">Detected clause type &#x27;conditions_precedent&#x27;.</div>
+<div class="muted">citation: clause_1_1 | span 22-160</div>
+</article><article class="finding">
+<span class="severity sev-info">INFO</span>
+<div class="finding-msg">Detected clause type &#x27;representations_and_warranties&#x27;.</div>
+<div class="muted">citation: clause_2_1 | span 188-309</div>
+</article><article class="finding">
+<span class="severity sev-info">INFO</span>
+<div class="finding-msg">Detected clause type &#x27;payment_terms&#x27;.</div>
+<div class="muted">citation: clause_3_1 | span 339-463</div>
+</article><article class="finding">
+<span class="severity sev-info">INFO</span>
+<div class="finding-msg">Detected clause type &#x27;financial_covenants&#x27;.</div>
+<div class="muted">citation: clause_4_1 | span 485-592</div>
+</article><article class="finding">
+<span class="severity sev-info">INFO</span>
+<div class="finding-msg">Detected clause type &#x27;collateral_security&#x27;.</div>
+<div class="muted">citation: clause_5_1 | span 613-727</div>
+</article><article class="finding">
+<span class="severity sev-info">INFO</span>
+<div class="finding-msg">Detected clause type &#x27;payment_terms&#x27;.</div>
+<div class="muted">citation: clause_6_1 | span 748-849</div>
+</article><article class="finding">
+<span class="severity sev-info">INFO</span>
+<div class="finding-msg">Detected clause type &#x27;governing_law&#x27;.</div>
+<div class="muted">citation: clause_7_1 | span 875-957</div>
+</article><article class="finding">
+<span class="severity sev-info">INFO</span>
+<div class="finding-msg">Detected clause type &#x27;representations_and_warranties&#x27;.</div>
+<div class="muted">citation: heading_2 | span 162-187</div>
+</article><article class="finding">
+<span class="severity sev-info">INFO</span>
+<div class="finding-msg">Detected clause type &#x27;payment_terms&#x27;.</div>
+<div class="muted">citation: heading_3 | span 311-338</div>
+</article><article class="finding">
+<span class="severity sev-info">INFO</span>
+<div class="finding-msg">Detected clause type &#x27;financial_covenants&#x27;.</div>
+<div class="muted">citation: heading_4 | span 465-484</div>
+</article><article class="finding">
+<span class="severity sev-info">INFO</span>
+<div class="finding-msg">Detected clause type &#x27;event_of_default&#x27;.</div>
+<div class="muted">citation: heading_6 | span 729-747</div>
+</article><article class="finding">
+<span class="severity sev-info">INFO</span>
+<div class="finding-msg">Detected clause type &#x27;governing_law&#x27;.</div>
+<div class="muted">citation: heading_7 | span 851-874</div>
+</article>
+            </div>
+            <details>
+                <summary>View raw artifacts</summary>
+                <h3>Evidence Packet (raw)</h3>
+                <pre>{
+  &quot;dag_execution&quot;: {
+    &quot;citation_policy&quot;: {
+      &quot;no_citation_no_answer&quot;: true,
+      &quot;require_node_id&quot;: true,
+      &quot;require_span&quot;: true
+    },
+    &quot;doc_type&quot;: &quot;credit_agreement&quot;,
+    &quot;executed_steps&quot;: [
+      &quot;detect_headings&quot;,
+      &quot;detect_numbered_clauses&quot;,
+      &quot;extract_definitions&quot;,
+      &quot;clause_classifier&quot;,
+      &quot;obligation_extractor&quot;,
+      &quot;playbook_compare&quot;
+    ],
+    &quot;mode&quot;: &quot;precision&quot;,
+    &quot;selected_steps&quot;: [
+      &quot;detect_headings&quot;,
+      &quot;detect_numbered_clauses&quot;,
+      &quot;extract_definitions&quot;,
+      &quot;clause_classifier&quot;,
+      &quot;obligation_extractor&quot;,
+      &quot;playbook_compare&quot;
+    ],
+    &quot;template_id&quot;: &quot;credit_agreement_v0_1&quot;,
+    &quot;template_route_steps&quot;: [
+      &quot;detect_headings&quot;,
+      &quot;detect_numbered_clauses&quot;,
+      &quot;extract_definitions&quot;,
+      &quot;clause_classifier&quot;,
+      &quot;obligation_extractor&quot;,
+      &quot;playbook_compare&quot;
+    ],
+    &quot;trace&quot;: [
+      {
+        &quot;depends_on&quot;: [],
+        &quot;output_key&quot;: &quot;headings&quot;,
+        &quot;result_count&quot;: 8,
+        &quot;step_id&quot;: &quot;detect_headings&quot;,
+        &quot;tool&quot;: &quot;spine_builder.detect_headings&quot;
+      },
+      {
+        &quot;depends_on&quot;: [
+          &quot;detect_headings&quot;
+        ],
+        &quot;output_key&quot;: &quot;clauses&quot;,
+        &quot;result_count&quot;: 8,
+        &quot;step_id&quot;: &quot;detect_numbered_clauses&quot;,
+        &quot;tool&quot;: &quot;spine_builder.detect_numbered_clauses&quot;
+      },
+      {
+        &quot;depends_on&quot;: [
+          &quot;detect_numbered_clauses&quot;
+        ],
+        &quot;output_key&quot;: &quot;definitions&quot;,
+        &quot;result_count&quot;: 0,
+        &quot;step_id&quot;: &quot;extract_definitions&quot;,
+        &quot;tool&quot;: &quot;spine_builder.extract_definitions&quot;
+      },
+      {
+        &quot;depends_on&quot;: [
+          &quot;extract_definitions&quot;
+        ],
+        &quot;output_key&quot;: &quot;classified_nodes&quot;,
+        &quot;result_count&quot;: 16,
+        &quot;step_id&quot;: &quot;clause_classifier&quot;,
+        &quot;tool&quot;: &quot;clause_classifier.classify&quot;
+      },
+      {
+        &quot;depends_on&quot;: [
+          &quot;clause_classifier&quot;
+        ],
+        &quot;output_key&quot;: &quot;obligations&quot;,
+        &quot;result_count&quot;: 7,
+        &quot;step_id&quot;: &quot;obligation_extractor&quot;,
+        &quot;tool&quot;: &quot;obligation_extractor.extract&quot;
+      },
+      {
+        &quot;depends_on&quot;: [
+          &quot;obligation_extractor&quot;
+        ],
+        &quot;output_key&quot;: &quot;findings&quot;,
+        &quot;result_count&quot;: 13,
+        &quot;step_id&quot;: &quot;playbook_compare&quot;,
+        &quot;tool&quot;: &quot;playbook_compare.compare&quot;
+      }
+    ]
+  },
+  &quot;doc_type&quot;: &quot;credit_agreement&quot;,
+  &quot;evidence_packet&quot;: {
+    &quot;citations&quot;: [
+      {
+        &quot;node_id&quot;: &quot;heading_2&quot;,
+        &quot;span_end&quot;: 187,
+        &quot;span_start&quot;: 162
+      },
+      {
+        &quot;node_id&quot;: &quot;heading_3&quot;,
+        &quot;span_end&quot;: 338,
+        &quot;span_start&quot;: 311
+      },
+      {
+        &quot;node_id&quot;: &quot;heading_4&quot;,
+        &quot;span_end&quot;: 484,
+        &quot;span_start&quot;: 465
+      },
+      {
+        &quot;node_id&quot;: &quot;heading_6&quot;,
+        &quot;span_end&quot;: 747,
+        &quot;span_start&quot;: 729
+      },
+      {
+        &quot;node_id&quot;: &quot;heading_7&quot;,
+        &quot;span_end&quot;: 874,
+        &quot;span_start&quot;: 851
+      },
+      {
+        &quot;node_id&quot;: &quot;clause_1_1&quot;,
+        &quot;span_end&quot;: 160,
+        &quot;span_start&quot;: 22
+      },
+      {
+        &quot;node_id&quot;: &quot;clause_2_1&quot;,
+        &quot;span_end&quot;: 309,
+        &quot;span_start&quot;: 188
+      },
+      {
+        &quot;node_id&quot;: &quot;clause_3_1&quot;,
+        &quot;span_end&quot;: 463,
+        &quot;span_start&quot;: 339
+      },
+      {
+        &quot;node_id&quot;: &quot;clause_4_1&quot;,
+        &quot;span_end&quot;: 592,
+        &quot;span_start&quot;: 485
+      },
+      {
+        &quot;node_id&quot;: &quot;clause_5_1&quot;,
+        &quot;span_end&quot;: 727,
+        &quot;span_start&quot;: 613
+      },
+      {
+        &quot;node_id&quot;: &quot;clause_6_1&quot;,
+        &quot;span_end&quot;: 849,
+        &quot;span_start&quot;: 748
+      },
+      {
+        &quot;node_id&quot;: &quot;clause_7_1&quot;,
+        &quot;span_end&quot;: 957,
+        &quot;span_start&quot;: 875
+      }
+    ],
+    &quot;classified_nodes&quot;: [
+      {
+        &quot;confidence&quot;: 0.94,
+        &quot;label&quot;: &quot;Section 6 Defaults&quot;,
+        &quot;node_id&quot;: &quot;heading_6&quot;,
+        &quot;provenance&quot;: {
+          &quot;tool&quot;: &quot;clause_classifier&quot;,
+          &quot;version&quot;: &quot;0.1&quot;
+        },
+        &quot;span_end&quot;: 747,
+        &quot;span_start&quot;: 729,
+        &quot;type&quot;: &quot;event_of_default&quot;
+      },
+      {
+        &quot;confidence&quot;: 0.94,
+        &quot;label&quot;: &quot;Collateral and Security Interest. Borrower grants a first priority security interest and lien over collateral.&quot;,
+        &quot;node_id&quot;: &quot;clause_5_1&quot;,
+        &quot;provenance&quot;: {
+          &quot;tool&quot;: &quot;clause_classifier&quot;,
+          &quot;version&quot;: &quot;0.1&quot;
+        },
+        &quot;span_end&quot;: 727,
+        &quot;span_start&quot;: 613,
+        &quot;type&quot;: &quot;collateral_security&quot;
+      },
+      {
+        &quot;confidence&quot;: 0.93,
+        &quot;label&quot;: &quot;Section 4 Covenants&quot;,
+        &quot;node_id&quot;: &quot;heading_4&quot;,
+        &quot;provenance&quot;: {
+          &quot;tool&quot;: &quot;clause_classifier&quot;,
+          &quot;version&quot;: &quot;0.1&quot;
+        },
+        &quot;span_end&quot;: 484,
+        &quot;span_start&quot;: 465,
+        &quot;type&quot;: &quot;financial_covenants&quot;
+      },
+      {
+        &quot;confidence&quot;: 0.93,
+        &quot;label&quot;: &quot;Financial Covenants. Borrower shall maintain leverage ratio and debt service coverage ratio thresholds.&quot;,
+        &quot;node_id&quot;: &quot;clause_4_1&quot;,
+        &quot;provenance&quot;: {
+          &quot;tool&quot;: &quot;clause_classifier&quot;,
+          &quot;version&quot;: &quot;0.1&quot;
+        },
+        &quot;span_end&quot;: 592,
+        &quot;span_start&quot;: 485,
+        &quot;type&quot;: &quot;financial_covenants&quot;
+      },
+      {
+        &quot;confidence&quot;: 0.91,
+        &quot;label&quot;: &quot;Section 3 Payment Mechanics&quot;,
+        &quot;node_id&quot;: &quot;heading_3&quot;,
+        &quot;provenance&quot;: {
+          &quot;tool&quot;: &quot;clause_classifier&quot;,
+          &quot;version&quot;: &quot;0.1&quot;
+        },
+        &quot;span_end&quot;: 338,
+        &quot;span_start&quot;: 311,
+        &quot;type&quot;: &quot;payment_terms&quot;
+      },
+      {
+        &quot;confidence&quot;: 0.91,
+        &quot;label&quot;: &quot;Section 7 Governing Law&quot;,
+        &quot;node_id&quot;: &quot;heading_7&quot;,
+        &quot;provenance&quot;: {
+          &quot;tool&quot;: &quot;clause_classifier&quot;,
+          &quot;version&quot;: &quot;0.1&quot;
+        },
+        &quot;span_end&quot;: 874,
+        &quot;span_start&quot;: 851,
+        &quot;type&quot;: &quot;governing_law&quot;
+      },
+      {
+        &quot;confidence&quot;: 0.91,
+        &quot;label&quot;: &quot;Payment Terms. Principal and accrued interest rate amounts are payable monthly; prepayment is permitted subject to fees.&quot;,
+        &quot;node_id&quot;: &quot;clause_3_1&quot;,
+        &quot;provenance&quot;: {
+          &quot;tool&quot;: &quot;clause_classifier&quot;,
+          &quot;version&quot;: &quot;0.1&quot;
+        },
+        &quot;span_end&quot;: 463,
+        &quot;span_start&quot;: 339,
+        &quot;type&quot;: &quot;payment_terms&quot;
+      },
+      {
+        &quot;confidence&quot;: 0.91,
+        &quot;label&quot;: &quot;Events of Default. Non-payment, covenant breach, and cross default trigger acceleration remedies.&quot;,
+        &quot;node_id&quot;: &quot;clause_6_1&quot;,
+        &quot;provenance&quot;: {
+          &quot;tool&quot;: &quot;clause_classifier&quot;,
+          &quot;version&quot;: &quot;0.1&quot;
+        },
+        &quot;span_end&quot;: 849,
+        &quot;span_start&quot;: 748,
+        &quot;type&quot;: &quot;payment_terms&quot;
+      }
+    ],
+    &quot;doc_type&quot;: &quot;credit_agreement&quot;,
+    &quot;executed_steps&quot;: [
+      &quot;detect_headings&quot;,
+      &quot;detect_numbered_clauses&quot;,
+      &quot;extract_definitions&quot;,
+      &quot;clause_classifier&quot;,
+      &quot;obligation_extractor&quot;,
+      &quot;playbook_compare&quot;
+    ],
+    &quot;findings&quot;: [
+      {
+        &quot;citation&quot;: {
+          &quot;node_id&quot;: &quot;heading_2&quot;,
+          &quot;span_end&quot;: 187,
+          &quot;span_start&quot;: 162
+        },
+        &quot;clause_type&quot;: &quot;representations_and_warranties&quot;,
+        &quot;finding_id&quot;: &quot;present_heading_2&quot;,
+        &quot;message&quot;: &quot;Detected clause type &#x27;representations_and_warranties&#x27;.&quot;,
+        &quot;severity&quot;: &quot;info&quot;,
+        &quot;status&quot;: &quot;present&quot;
+      },
+      {
+        &quot;citation&quot;: {
+          &quot;node_id&quot;: &quot;heading_3&quot;,
+          &quot;span_end&quot;: 338,
+          &quot;span_start&quot;: 311
+        },
+        &quot;clause_type&quot;: &quot;payment_terms&quot;,
+        &quot;finding_id&quot;: &quot;present_heading_3&quot;,
+        &quot;message&quot;: &quot;Detected clause type &#x27;payment_terms&#x27;.&quot;,
+        &quot;severity&quot;: &quot;info&quot;,
+        &quot;status&quot;: &quot;present&quot;
+      },
+      {
+        &quot;citation&quot;: {
+          &quot;node_id&quot;: &quot;heading_4&quot;,
+          &quot;span_end&quot;: 484,
+          &quot;span_start&quot;: 465
+        },
+        &quot;clause_type&quot;: &quot;financial_covenants&quot;,
+        &quot;finding_id&quot;: &quot;present_heading_4&quot;,
+        &quot;message&quot;: &quot;Detected clause type &#x27;financial_covenants&#x27;.&quot;,
+        &quot;severity&quot;: &quot;info&quot;,
+        &quot;status&quot;: &quot;present&quot;
+      },
+      {
+        &quot;citation&quot;: {
+          &quot;node_id&quot;: &quot;heading_6&quot;,
+          &quot;span_end&quot;: 747,
+          &quot;span_start&quot;: 729
+        },
+        &quot;clause_type&quot;: &quot;event_of_default&quot;,
+        &quot;finding_id&quot;: &quot;present_heading_6&quot;,
+        &quot;message&quot;: &quot;Detected clause type &#x27;event_of_default&#x27;.&quot;,
+        &quot;severity&quot;: &quot;info&quot;,
+        &quot;status&quot;: &quot;present&quot;
+      },
+      {
+        &quot;citation&quot;: {
+          &quot;node_id&quot;: &quot;heading_7&quot;,
+          &quot;span_end&quot;: 874,
+          &quot;span_start&quot;: 851
+        },
+        &quot;clause_type&quot;: &quot;governing_law&quot;,
+        &quot;finding_id&quot;: &quot;present_heading_7&quot;,
+        &quot;message&quot;: &quot;Detected clause type &#x27;governing_law&#x27;.&quot;,
+        &quot;severity&quot;: &quot;info&quot;,
+        &quot;status&quot;: &quot;present&quot;
+      },
+      {
+        &quot;citation&quot;: {
+          &quot;node_id&quot;: &quot;clause_1_1&quot;,
+          &quot;span_end&quot;: 160,
+          &quot;span_start&quot;: 22
+        },
+        &quot;clause_type&quot;: &quot;conditions_precedent&quot;,
+        &quot;finding_id&quot;: &quot;present_clause_1_1&quot;,
+        &quot;message&quot;: &quot;Detected clause type &#x27;conditions_precedent&#x27;.&quot;,
+        &quot;severity&quot;: &quot;info&quot;,
+        &quot;status&quot;: &quot;present&quot;
+      },
+      {
+        &quot;citation&quot;: {
+          &quot;node_id&quot;: &quot;clause_2_1&quot;,
+          &quot;span_end&quot;: 309,
+          &quot;span_start&quot;: 188
+        },
+        &quot;clause_type&quot;: &quot;representations_and_warranties&quot;,
+        &quot;finding_id&quot;: &quot;present_clause_2_1&quot;,
+        &quot;message&quot;: &quot;Detected clause type &#x27;representations_and_warranties&#x27;.&quot;,
+        &quot;severity&quot;: &quot;info&quot;,
+        &quot;status&quot;: &quot;present&quot;
+      },
+      {
+        &quot;citation&quot;: {
+          &quot;node_id&quot;: &quot;clause_3_1&quot;,
+          &quot;span_end&quot;: 463,
+          &quot;span_start&quot;: 339
+        },
+        &quot;clause_type&quot;: &quot;payment_terms&quot;,
+        &quot;finding_id&quot;: &quot;present_clause_3_1&quot;,
+        &quot;message&quot;: &quot;Detected clause type &#x27;payment_terms&#x27;.&quot;,
+        &quot;severity&quot;: &quot;info&quot;,
+        &quot;status&quot;: &quot;present&quot;
+      },
+      {
+        &quot;citation&quot;: {
+          &quot;node_id&quot;: &quot;clause_4_1&quot;,
+          &quot;span_end&quot;: 592,
+          &quot;span_start&quot;: 485
+        },
+        &quot;clause_type&quot;: &quot;financial_covenants&quot;,
+        &quot;finding_id&quot;: &quot;present_clause_4_1&quot;,
+        &quot;message&quot;: &quot;Detected clause type &#x27;financial_covenants&#x27;.&quot;,
+        &quot;severity&quot;: &quot;info&quot;,
+        &quot;status&quot;: &quot;present&quot;
+      },
+      {
+        &quot;citation&quot;: {
+          &quot;node_id&quot;: &quot;clause_5_1&quot;,
+          &quot;span_end&quot;: 727,
+          &quot;span_start&quot;: 613
+        },
+        &quot;clause_type&quot;: &quot;collateral_security&quot;,
+        &quot;finding_id&quot;: &quot;present_clause_5_1&quot;,
+        &quot;message&quot;: &quot;Detected clause type &#x27;collateral_security&#x27;.&quot;,
+        &quot;severity&quot;: &quot;info&quot;,
+        &quot;status&quot;: &quot;present&quot;
+      },
+      {
+        &quot;citation&quot;: {
+          &quot;node_id&quot;: &quot;clause_6_1&quot;,
+          &quot;span_end&quot;: 849,
+          &quot;span_start&quot;: 748
+        },
+        &quot;clause_type&quot;: &quot;payment_terms&quot;,
+        &quot;finding_id&quot;: &quot;present_clause_6_1&quot;,
+        &quot;message&quot;: &quot;Detected clause type &#x27;payment_terms&#x27;.&quot;,
+        &quot;severity&quot;: &quot;info&quot;,
+        &quot;status&quot;: &quot;present&quot;
+      },
+      {
+        &quot;citation&quot;: {
+          &quot;node_id&quot;: &quot;clause_7_1&quot;,
+          &quot;span_end&quot;: 957,
+          &quot;span_start&quot;: 875
+        },
+        &quot;clause_type&quot;: &quot;governing_law&quot;,
+        &quot;finding_id&quot;: &quot;present_clause_7_1&quot;,
+        &quot;message&quot;: &quot;Detected clause type &#x27;governing_law&#x27;.&quot;,
+        &quot;severity&quot;: &quot;info&quot;,
+        &quot;status&quot;: &quot;present&quot;
+      }
+    ],
+    &quot;mode&quot;: &quot;precision&quot;,
+    &quot;obligations&quot;: [
+      {
+        &quot;confidence&quot;: 0.8,
+        &quot;node_id&quot;: &quot;obligation_2&quot;,
+        &quot;provenance&quot;: {
+          &quot;tool&quot;: &quot;obligation_extractor&quot;,
+          &quot;version&quot;: &quot;0.1&quot;
+        },
+        &quot;source_node_id&quot;: &quot;heading_2&quot;,
+        &quot;span_end&quot;: 387,
+        &quot;span_start&quot;: 162,
+        &quot;type&quot;: &quot;obligation&quot;
+      },
+      {
+        &quot;confidence&quot;: 0.8,
+        &quot;node_id&quot;: &quot;obligation_3&quot;,
+        &quot;provenance&quot;: {
+          &quot;tool&quot;: &quot;obligation_extractor&quot;,
+          &quot;version&quot;: &quot;0.1&quot;
+        },
+        &quot;source_node_id&quot;: &quot;heading_3&quot;,
+        &quot;span_end&quot;: 538,
+        &quot;span_start&quot;: 311,
+        &quot;type&quot;: &quot;obligation&quot;
+      },
+      {
+        &quot;confidence&quot;: 0.8,
+        &quot;node_id&quot;: &quot;obligation_4&quot;,
+        &quot;provenance&quot;: {
+          &quot;tool&quot;: &quot;obligation_extractor&quot;,
+          &quot;version&quot;: &quot;0.1&quot;
+        },
+        &quot;source_node_id&quot;: &quot;heading_4&quot;,
+        &quot;span_end&quot;: 684,
+        &quot;span_start&quot;: 465,
+        &quot;type&quot;: &quot;obligation&quot;
+      },
+      {
+        &quot;confidence&quot;: 0.8,
+        &quot;node_id&quot;: &quot;obligation_9&quot;,
+        &quot;provenance&quot;: {
+          &quot;tool&quot;: &quot;obligation_extractor&quot;,
+          &quot;version&quot;: &quot;0.1&quot;
+        },
+        &quot;source_node_id&quot;: &quot;clause_1_1&quot;,
+        &quot;span_end&quot;: 360,
+        &quot;span_start&quot;: 22,
+        &quot;type&quot;: &quot;obligation&quot;
+      },
+      {
+        &quot;confidence&quot;: 0.8,
+        &quot;node_id&quot;: &quot;obligation_10&quot;,
+        &quot;provenance&quot;: {
+          &quot;tool&quot;: &quot;obligation_extractor&quot;,
+          &quot;version&quot;: &quot;0.1&quot;
+        },
+        &quot;source_node_id&quot;: &quot;clause_2_1&quot;,
+        &quot;span_end&quot;: 509,
+        &quot;span_start&quot;: 188,
+        &quot;type&quot;: &quot;obligation&quot;
+      },
+      {
+        &quot;confidence&quot;: 0.8,
+        &quot;node_id&quot;: &quot;obligation_11&quot;,
+        &quot;provenance&quot;: {
+          &quot;tool&quot;: &quot;obligation_extractor&quot;,
+          &quot;version&quot;: &quot;0.1&quot;
+        },
+        &quot;source_node_id&quot;: &quot;clause_3_1&quot;,
+        &quot;span_end&quot;: 663,
+        &quot;span_start&quot;: 339,
+        &quot;type&quot;: &quot;obligation&quot;
+      },
+      {
+        &quot;confidence&quot;: 0.8,
+        &quot;node_id&quot;: &quot;obligation_12&quot;,
+        &quot;provenance&quot;: {
+          &quot;tool&quot;: &quot;obligation_extractor&quot;,
+          &quot;version&quot;: &quot;0.1&quot;
+        },
+        &quot;source_node_id&quot;: &quot;clause_4_1&quot;,
+        &quot;span_end&quot;: 792,
+        &quot;span_start&quot;: 485,
+        &quot;type&quot;: &quot;obligation&quot;
+      }
+    ],
+    &quot;retrieval&quot;: {
+      &quot;chunk_count&quot;: 8,
+      &quot;chunks&quot;: [
+        {
+          &quot;chunk_id&quot;: &quot;chunk_6&quot;,
+          &quot;excerpt&quot;: &quot;Section 6 Defaults\n6.1 Events of Default. Non-payment, covenant breach, and cross default trigger acceleration remedies.&quot;,
+          &quot;mass&quot;: 1.24,
+          &quot;node_ids&quot;: [
+            &quot;auto_6&quot;
+          ],
+          &quot;score&quot;: 0.4124,
+          &quot;span_end&quot;: 849,
+          &quot;span_start&quot;: 729
+        },
+        {
+          &quot;chunk_id&quot;: &quot;chunk_1&quot;,
+          &quot;excerpt&quot;: &quot;Section 1 Definitions\n1.1 Conditions Precedent. Conditions precedent to initial borrowing include delivery of constitutional documents and officer certificates.&quot;,
+          &quot;mass&quot;: 1.32,
+          &quot;node_ids&quot;: [
+            &quot;auto_1&quot;
+          ],
+          &quot;score&quot;: 0.2132,
+          &quot;span_end&quot;: 160,
+          &quot;span_start&quot;: 0
+        },
+        {
+          &quot;chunk_id&quot;: &quot;chunk_3&quot;,
+          &quot;excerpt&quot;: &quot;Section 3 Payment Mechanics\n3.1 Payment Terms. Principal and accrued interest rate amounts are payable monthly; prepayment is permitted subject to fees.&quot;,
+          &quot;mass&quot;: 1.304,
+          &quot;node_ids&quot;: [
+            &quot;auto_3&quot;
+          ],
+          &quot;score&quot;: 0.11304,
+          &quot;span_end&quot;: 463,
+          &quot;span_start&quot;: 311
+        }
+      ],
+      &quot;method&quot;: &quot;dynamic_chunking_naive_mass_strength&quot;,
+      &quot;params&quot;: {
+        &quot;merge&quot;: &quot;mass_strength_naive&quot;,
+        &quot;window&quot;: 6
+      }
+    }
+  },
+  &quot;mode&quot;: &quot;precision&quot;,
+  &quot;orchestrator_decision&quot;: {
+    &quot;available_steps&quot;: [
+      &quot;detect_headings&quot;,
+      &quot;detect_numbered_clauses&quot;,
+      &quot;extract_definitions&quot;,
+      &quot;clause_classifier&quot;,
+      &quot;obligation_extractor&quot;,
+      &quot;playbook_compare&quot;
+    ],
+    &quot;confidence&quot;: 0.84,
+    &quot;doc_type&quot;: &quot;credit_agreement&quot;,
+    &quot;doc_type_scores&quot;: {
+      &quot;credit_agreement&quot;: 10.0,
+      &quot;loan_agreement&quot;: 3.0,
+      &quot;msa&quot;: 0.0,
+      &quot;nda&quot;: 0.0
+    },
+    &quot;mode&quot;: &quot;precision&quot;,
+    &quot;query&quot;: &quot;Quote events of default and compare against baseline risk requirements.&quot;,
+    &quot;reasons&quot;: [
+      &quot;doc_type selected by keyword score (credit_agreement=10.0)&quot;,
+      &quot;query contains precision/evidence keywords&quot;,
+      &quot;precision + compare/risk query =&gt; playbook_diff&quot;
+    ],
+    &quot;retrieval&quot;: {
+      &quot;chunk_count&quot;: 8,
+      &quot;chunks&quot;: [
+        {
+          &quot;chunk_id&quot;: &quot;chunk_6&quot;,
+          &quot;excerpt&quot;: &quot;Section 6 Defaults\n6.1 Events of Default. Non-payment, covenant breach, and cross default trigger acceleration remedies.&quot;,
+          &quot;mass&quot;: 1.24,
+          &quot;node_ids&quot;: [
+            &quot;auto_6&quot;
+          ],
+          &quot;score&quot;: 0.4124,
+          &quot;span_end&quot;: 849,
+          &quot;span_start&quot;: 729
+        },
+        {
+          &quot;chunk_id&quot;: &quot;chunk_1&quot;,
+          &quot;excerpt&quot;: &quot;Section 1 Definitions\n1.1 Conditions Precedent. Conditions precedent to initial borrowing include delivery of constitutional documents and officer certificates.&quot;,
+          &quot;mass&quot;: 1.32,
+          &quot;node_ids&quot;: [
+            &quot;auto_1&quot;
+          ],
+          &quot;score&quot;: 0.2132,
+          &quot;span_end&quot;: 160,
+          &quot;span_start&quot;: 0
+        },
+        {
+          &quot;chunk_id&quot;: &quot;chunk_3&quot;,
+          &quot;excerpt&quot;: &quot;Section 3 Payment Mechanics\n3.1 Payment Terms. Principal and accrued interest rate amounts are payable monthly; prepayment is permitted subject to fees.&quot;,
+          &quot;mass&quot;: 1.304,
+          &quot;node_ids&quot;: [
+            &quot;auto_3&quot;
+          ],
+          &quot;score&quot;: 0.11304,
+          &quot;span_end&quot;: 463,
+          &quot;span_start&quot;: 311
+        }
+      ],
+      &quot;method&quot;: &quot;dynamic_chunking_naive_mass_strength&quot;,
+      &quot;params&quot;: {
+        &quot;merge&quot;: &quot;mass_strength_naive&quot;,
+        &quot;window&quot;: 6
+      }
+    },
+    &quot;selected_steps&quot;: [
+      &quot;detect_headings&quot;,
+      &quot;detect_numbered_clauses&quot;,
+      &quot;extract_definitions&quot;,
+      &quot;clause_classifier&quot;,
+      &quot;obligation_extractor&quot;,
+      &quot;playbook_compare&quot;
+    ],
+    &quot;spine_source&quot;: &quot;auto&quot;,
+    &quot;subtree_profile&quot;: &quot;playbook_diff&quot;
+  },
+  &quot;query&quot;: &quot;Quote events of default and compare against baseline risk requirements.&quot;,
+  &quot;requested_doc&quot;: &quot;docs/cache/sample_credit_agreement.txt&quot;,
+  &quot;retrieval_override&quot;: null,
+  &quot;scenario&quot;: &quot;credit_precision&quot;
+}</pre>
+                <h3>Bronze Extraction (raw)</h3>
+                <pre>{
+  &quot;extracted_text&quot;: &quot;Section 1 Definitions\n1.1 Conditions Precedent. Conditions precedent to initial borrowing include delivery of constitutional documents and officer certificates.\n\nSection 2 Representations\n2.1 Representations and Warranties. The Borrower represents and warrants due organization, authority, and enforceability.\n\nSection 3 Payment Mechanics\n3.1 Payment Terms. Principal and accrued interest rate amounts are payable monthly; prepayment is permitted subject to fees.\n\nSection 4 Covenants\n4.1 Financial Covenants. Borrower shall maintain leverage ratio and debt service coverage ratio thresholds.\n\nSection 5 Security\n5.1 Collateral and Security Interest. Borrower grants a first priority security interest and lien over collateral.\n\nSection 6 Defaults\n6.1 Events of Default. Non-payment, covenant breach, and cross default trigger acceleration remedies.\n\nSection 7 Governing Law\n7.1 Governing Law and Venue. This Agreement is governed by New York law and venue.\n\nSection 8 Guarantee\n8.1 Guarantee. Parent provides an unconditional guarantee of borrower obligations.\n&quot;,
+  &quot;metadata&quot;: {
+    &quot;extracted_utc&quot;: &quot;2026-03-05T16:27:40.732028+00:00&quot;,
+    &quot;extractor&quot;: &quot;txt_reader&quot;,
+    &quot;version&quot;: &quot;0.1&quot;
+  },
+  &quot;source&quot;: {
+    &quot;extension&quot;: &quot;.txt&quot;,
+    &quot;modified_utc&quot;: &quot;2026-02-18T19:06:46.683293+00:00&quot;,
+    &quot;name&quot;: &quot;sample_credit_agreement.txt&quot;,
+    &quot;path&quot;: &quot;G:\\CAA\\docs\\cache\\sample_credit_agreement.txt&quot;,
+    &quot;size_bytes&quot;: 1085
+  },
+  &quot;tables&quot;: []
+}</pre>
+            </details>
+        </section>
+        
+
+    <footer class="footer">
+      <div>No citation, no answer.</div>
+      <div>Scenario: credit_precision | Document: sample_credit_agreement.txt | Generated: Timestamp omitted (--no-timestamp)</div>
+      <div>Bronze -> Structure -> Evidence -> Answer</div>
+    </footer>
+  </main>
+</body>
+</html>

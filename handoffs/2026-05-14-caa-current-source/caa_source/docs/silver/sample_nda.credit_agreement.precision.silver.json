@@ -1,0 +1,248 @@
+{
+  "document": {
+    "path": "docs\\cache\\sample_nda.txt",
+    "doc_type": "credit_agreement",
+    "mode": "precision",
+    "processed_utc": "2026-02-18T19:03:30.957930+00:00"
+  },
+  "bronze_artifact": "G:\\CAA\\docs\\bronze\\sample_nda.bronze.json",
+  "spine": {
+    "headings": [
+      {
+        "node_id": "heading_1",
+        "type": "section_heading",
+        "label": "Section 1 Purpose",
+        "span_start": 0,
+        "span_end": 17,
+        "confidence": 0.9,
+        "provenance": {
+          "tool": "detect_headings",
+          "version": "0.1"
+        }
+      },
+      {
+        "node_id": "heading_2",
+        "type": "section_heading",
+        "label": "Section 2 Term",
+        "span_start": 110,
+        "span_end": 124,
+        "confidence": 0.9,
+        "provenance": {
+          "tool": "detect_headings",
+          "version": "0.1"
+        }
+      },
+      {
+        "node_id": "heading_3",
+        "type": "section_heading",
+        "label": "Section 3 Liability",
+        "span_start": 215,
+        "span_end": 234,
+        "confidence": 0.9,
+        "provenance": {
+          "tool": "detect_headings",
+          "version": "0.1"
+        }
+      }
+    ],
+    "clauses": [
+      {
+        "node_id": "clause_1_1",
+        "type": "clause",
+        "label": "Confidentiality. Each party shall keep Confidential Information strictly confidential.",
+        "span_start": 18,
+        "span_end": 108,
+        "confidence": 0.85,
+        "provenance": {
+          "tool": "detect_numbered_clauses",
+          "version": "0.1"
+        }
+      },
+      {
+        "node_id": "clause_2_1",
+        "type": "clause",
+        "label": "Termination. Either party may terminate for material breach with thirty days notice.",
+        "span_start": 125,
+        "span_end": 213,
+        "confidence": 0.85,
+        "provenance": {
+          "tool": "detect_numbered_clauses",
+          "version": "0.1"
+        }
+      },
+      {
+        "node_id": "clause_3_1",
+        "type": "clause",
+        "label": "Limitation of Liability. Neither party shall be liable for indirect damages.",
+        "span_start": 235,
+        "span_end": 315,
+        "confidence": 0.85,
+        "provenance": {
+          "tool": "detect_numbered_clauses",
+          "version": "0.1"
+        }
+      }
+    ],
+    "definitions": [
+      {
+        "node_id": "def_1",
+        "type": "definition",
+        "term": "Confidential Information",
+        "value": "non-public information disclosed by either party.",
+        "span_start": 317,
+        "span_end": 399,
+        "confidence": 0.88,
+        "provenance": {
+          "tool": "extract_definitions",
+          "version": "0.1"
+        }
+      }
+    ]
+  },
+  "classified_nodes": [
+    {
+      "node_id": "heading_1",
+      "type": "unknown_clause",
+      "label": "Section 1 Purpose",
+      "span_start": 0,
+      "span_end": 17,
+      "confidence": 0.9,
+      "provenance": {
+        "tool": "clause_classifier",
+        "version": "0.1"
+      }
+    },
+    {
+      "node_id": "heading_2",
+      "type": "unknown_clause",
+      "label": "Section 2 Term",
+      "span_start": 110,
+      "span_end": 124,
+      "confidence": 0.9,
+      "provenance": {
+        "tool": "clause_classifier",
+        "version": "0.1"
+      }
+    },
+    {
+      "node_id": "heading_3",
+      "type": "unknown_clause",
+      "label": "Section 3 Liability",
+      "span_start": 215,
+      "span_end": 234,
+      "confidence": 0.9,
+      "provenance": {
+        "tool": "clause_classifier",
+        "version": "0.1"
+      }
+    },
+    {
+      "node_id": "clause_1_1",
+      "type": "confidentiality",
+      "label": "Confidentiality. Each party shall keep Confidential Information strictly confidential.",
+      "span_start": 18,
+      "span_end": 108,
+      "confidence": 0.91,
+      "provenance": {
+        "tool": "clause_classifier",
+        "version": "0.1"
+      }
+    },
+    {
+      "node_id": "clause_2_1",
+      "type": "termination",
+      "label": "Termination. Either party may terminate for material breach with thirty days notice.",
+      "span_start": 125,
+      "span_end": 213,
+      "confidence": 0.91,
+      "provenance": {
+        "tool": "clause_classifier",
+        "version": "0.1"
+      }
+    },
+    {
+      "node_id": "clause_3_1",
+      "type": "limitation_of_liability",
+      "label": "Limitation of Liability. Neither party shall be liable for indirect damages.",
+      "span_start": 235,
+      "span_end": 315,
+      "confidence": 0.91,
+      "provenance": {
+        "tool": "clause_classifier",
+        "version": "0.1"
+      }
+    }
+  ],
+  "dag_execution": {
+    "template_id": "credit_agreement_v0_1",
+    "doc_type": "credit_agreement",
+    "mode": "precision",
+    "citation_policy": {
+      "require_node_id": true,
+      "require_span": true,
+      "no_citation_no_answer": true
+    },
+    "executed_steps": [
+      "detect_headings",
+      "detect_numbered_clauses",
+      "extract_definitions",
+      "clause_classifier",
+      "obligation_extractor",
+      "playbook_compare"
+    ],
+    "trace": [
+      {
+        "step_id": "detect_headings",
+        "tool": "spine_builder.detect_headings",
+        "output_key": "headings",
+        "depends_on": [],
+        "result_count": 3
+      },
+      {
+        "step_id": "detect_numbered_clauses",
+        "tool": "spine_builder.detect_numbered_clauses",
+        "output_key": "clauses",
+        "depends_on": [
+          "detect_headings"
+        ],
+        "result_count": 3
+      },
+      {
+        "step_id": "extract_definitions",
+        "tool": "spine_builder.extract_definitions",
+        "output_key": "definitions",
+        "depends_on": [
+          "detect_numbered_clauses"
+        ],
+        "result_count": 1
+      },
+      {
+        "step_id": "clause_classifier",
+        "tool": "clause_classifier.classify",
+        "output_key": "classified_nodes",
+        "depends_on": [
+          "extract_definitions"
+        ],
+        "result_count": 6
+      },
+      {
+        "step_id": "obligation_extractor",
+        "tool": "obligation_extractor.extract",
+        "output_key": "obligations",
+        "depends_on": [
+          "clause_classifier"
+        ],
+        "result_count": 6
+      },
+      {
+        "step_id": "playbook_compare",
+        "tool": "playbook_compare.compare",
+        "output_key": "findings",
+        "depends_on": [
+          "obligation_extractor"
+        ],
+        "result_count": 6
+      }
+    ]
+  }
+}

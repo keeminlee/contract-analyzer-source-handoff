@@ -1,0 +1,474 @@
+{
+  "document": {
+    "path": "docs\\cache\\sample_credit_agreement.txt",
+    "doc_type": "loan_agreement",
+    "mode": "precision",
+    "processed_utc": "2026-02-18T19:05:37.498307+00:00"
+  },
+  "bronze_artifact": "G:\\CAA\\docs\\bronze\\sample_credit_agreement.bronze.json",
+  "spine": {
+    "headings": [
+      {
+        "node_id": "heading_1",
+        "type": "section_heading",
+        "label": "Section 1 Definitions",
+        "span_start": 0,
+        "span_end": 21,
+        "confidence": 0.9,
+        "provenance": {
+          "tool": "detect_headings",
+          "version": "0.1"
+        }
+      },
+      {
+        "node_id": "heading_2",
+        "type": "section_heading",
+        "label": "Section 2 Representations",
+        "span_start": 162,
+        "span_end": 187,
+        "confidence": 0.9,
+        "provenance": {
+          "tool": "detect_headings",
+          "version": "0.1"
+        }
+      },
+      {
+        "node_id": "heading_3",
+        "type": "section_heading",
+        "label": "Section 3 Payment Mechanics",
+        "span_start": 311,
+        "span_end": 338,
+        "confidence": 0.9,
+        "provenance": {
+          "tool": "detect_headings",
+          "version": "0.1"
+        }
+      },
+      {
+        "node_id": "heading_4",
+        "type": "section_heading",
+        "label": "Section 4 Covenants",
+        "span_start": 465,
+        "span_end": 484,
+        "confidence": 0.9,
+        "provenance": {
+          "tool": "detect_headings",
+          "version": "0.1"
+        }
+      },
+      {
+        "node_id": "heading_5",
+        "type": "section_heading",
+        "label": "Section 5 Security",
+        "span_start": 594,
+        "span_end": 612,
+        "confidence": 0.9,
+        "provenance": {
+          "tool": "detect_headings",
+          "version": "0.1"
+        }
+      },
+      {
+        "node_id": "heading_6",
+        "type": "section_heading",
+        "label": "Section 6 Defaults",
+        "span_start": 729,
+        "span_end": 747,
+        "confidence": 0.9,
+        "provenance": {
+          "tool": "detect_headings",
+          "version": "0.1"
+        }
+      },
+      {
+        "node_id": "heading_7",
+        "type": "section_heading",
+        "label": "Section 7 Governing Law",
+        "span_start": 851,
+        "span_end": 874,
+        "confidence": 0.9,
+        "provenance": {
+          "tool": "detect_headings",
+          "version": "0.1"
+        }
+      },
+      {
+        "node_id": "heading_8",
+        "type": "section_heading",
+        "label": "Section 8 Guarantee",
+        "span_start": 959,
+        "span_end": 978,
+        "confidence": 0.9,
+        "provenance": {
+          "tool": "detect_headings",
+          "version": "0.1"
+        }
+      }
+    ],
+    "clauses": [
+      {
+        "node_id": "clause_1_1",
+        "type": "clause",
+        "label": "Conditions Precedent. Conditions precedent to initial borrowing include delivery of constitutional documents and officer certificates.",
+        "span_start": 22,
+        "span_end": 160,
+        "confidence": 0.85,
+        "provenance": {
+          "tool": "detect_numbered_clauses",
+          "version": "0.1"
+        }
+      },
+      {
+        "node_id": "clause_2_1",
+        "type": "clause",
+        "label": "Representations and Warranties. The Borrower represents and warrants due organization, authority, and enforceability.",
+        "span_start": 188,
+        "span_end": 309,
+        "confidence": 0.85,
+        "provenance": {
+          "tool": "detect_numbered_clauses",
+          "version": "0.1"
+        }
+      },
+      {
+        "node_id": "clause_3_1",
+        "type": "clause",
+        "label": "Payment Terms. Principal and accrued interest rate amounts are payable monthly; prepayment is permitted subject to fees.",
+        "span_start": 339,
+        "span_end": 463,
+        "confidence": 0.85,
+        "provenance": {
+          "tool": "detect_numbered_clauses",
+          "version": "0.1"
+        }
+      },
+      {
+        "node_id": "clause_4_1",
+        "type": "clause",
+        "label": "Financial Covenants. Borrower shall maintain leverage ratio and debt service coverage ratio thresholds.",
+        "span_start": 485,
+        "span_end": 592,
+        "confidence": 0.85,
+        "provenance": {
+          "tool": "detect_numbered_clauses",
+          "version": "0.1"
+        }
+      },
+      {
+        "node_id": "clause_5_1",
+        "type": "clause",
+        "label": "Collateral and Security Interest. Borrower grants a first priority security interest and lien over collateral.",
+        "span_start": 613,
+        "span_end": 727,
+        "confidence": 0.85,
+        "provenance": {
+          "tool": "detect_numbered_clauses",
+          "version": "0.1"
+        }
+      },
+      {
+        "node_id": "clause_6_1",
+        "type": "clause",
+        "label": "Events of Default. Non-payment, covenant breach, and cross default trigger acceleration remedies.",
+        "span_start": 748,
+        "span_end": 849,
+        "confidence": 0.85,
+        "provenance": {
+          "tool": "detect_numbered_clauses",
+          "version": "0.1"
+        }
+      },
+      {
+        "node_id": "clause_7_1",
+        "type": "clause",
+        "label": "Governing Law and Venue. This Agreement is governed by New York law and venue.",
+        "span_start": 875,
+        "span_end": 957,
+        "confidence": 0.85,
+        "provenance": {
+          "tool": "detect_numbered_clauses",
+          "version": "0.1"
+        }
+      },
+      {
+        "node_id": "clause_8_1",
+        "type": "clause",
+        "label": "Guarantee. Parent provides an unconditional guarantee of borrower obligations.",
+        "span_start": 979,
+        "span_end": 1061,
+        "confidence": 0.85,
+        "provenance": {
+          "tool": "detect_numbered_clauses",
+          "version": "0.1"
+        }
+      }
+    ],
+    "definitions": []
+  },
+  "classified_nodes": [
+    {
+      "node_id": "heading_1",
+      "type": "unknown_clause",
+      "label": "Section 1 Definitions",
+      "span_start": 0,
+      "span_end": 21,
+      "confidence": 0.9,
+      "provenance": {
+        "tool": "clause_classifier",
+        "version": "0.1"
+      }
+    },
+    {
+      "node_id": "heading_2",
+      "type": "representations_and_warranties",
+      "label": "Section 2 Representations",
+      "span_start": 162,
+      "span_end": 187,
+      "confidence": 0.9,
+      "provenance": {
+        "tool": "clause_classifier",
+        "version": "0.1"
+      }
+    },
+    {
+      "node_id": "heading_3",
+      "type": "payment_terms",
+      "label": "Section 3 Payment Mechanics",
+      "span_start": 311,
+      "span_end": 338,
+      "confidence": 0.91,
+      "provenance": {
+        "tool": "clause_classifier",
+        "version": "0.1"
+      }
+    },
+    {
+      "node_id": "heading_4",
+      "type": "financial_covenants",
+      "label": "Section 4 Covenants",
+      "span_start": 465,
+      "span_end": 484,
+      "confidence": 0.93,
+      "provenance": {
+        "tool": "clause_classifier",
+        "version": "0.1"
+      }
+    },
+    {
+      "node_id": "heading_5",
+      "type": "unknown_clause",
+      "label": "Section 5 Security",
+      "span_start": 594,
+      "span_end": 612,
+      "confidence": 0.9,
+      "provenance": {
+        "tool": "clause_classifier",
+        "version": "0.1"
+      }
+    },
+    {
+      "node_id": "heading_6",
+      "type": "event_of_default",
+      "label": "Section 6 Defaults",
+      "span_start": 729,
+      "span_end": 747,
+      "confidence": 0.94,
+      "provenance": {
+        "tool": "clause_classifier",
+        "version": "0.1"
+      }
+    },
+    {
+      "node_id": "heading_7",
+      "type": "governing_law",
+      "label": "Section 7 Governing Law",
+      "span_start": 851,
+      "span_end": 874,
+      "confidence": 0.91,
+      "provenance": {
+        "tool": "clause_classifier",
+        "version": "0.1"
+      }
+    },
+    {
+      "node_id": "heading_8",
+      "type": "guarantees",
+      "label": "Section 8 Guarantee",
+      "span_start": 959,
+      "span_end": 978,
+      "confidence": 0.9,
+      "provenance": {
+        "tool": "clause_classifier",
+        "version": "0.1"
+      }
+    },
+    {
+      "node_id": "clause_1_1",
+      "type": "conditions_precedent",
+      "label": "Conditions Precedent. Conditions precedent to initial borrowing include delivery of constitutional documents and officer certificates.",
+      "span_start": 22,
+      "span_end": 160,
+      "confidence": 0.9,
+      "provenance": {
+        "tool": "clause_classifier",
+        "version": "0.1"
+      }
+    },
+    {
+      "node_id": "clause_2_1",
+      "type": "representations_and_warranties",
+      "label": "Representations and Warranties. The Borrower represents and warrants due organization, authority, and enforceability.",
+      "span_start": 188,
+      "span_end": 309,
+      "confidence": 0.9,
+      "provenance": {
+        "tool": "clause_classifier",
+        "version": "0.1"
+      }
+    },
+    {
+      "node_id": "clause_3_1",
+      "type": "payment_terms",
+      "label": "Payment Terms. Principal and accrued interest rate amounts are payable monthly; prepayment is permitted subject to fees.",
+      "span_start": 339,
+      "span_end": 463,
+      "confidence": 0.91,
+      "provenance": {
+        "tool": "clause_classifier",
+        "version": "0.1"
+      }
+    },
+    {
+      "node_id": "clause_4_1",
+      "type": "financial_covenants",
+      "label": "Financial Covenants. Borrower shall maintain leverage ratio and debt service coverage ratio thresholds.",
+      "span_start": 485,
+      "span_end": 592,
+      "confidence": 0.93,
+      "provenance": {
+        "tool": "clause_classifier",
+        "version": "0.1"
+      }
+    },
+    {
+      "node_id": "clause_5_1",
+      "type": "collateral_security",
+      "label": "Collateral and Security Interest. Borrower grants a first priority security interest and lien over collateral.",
+      "span_start": 613,
+      "span_end": 727,
+      "confidence": 0.94,
+      "provenance": {
+        "tool": "clause_classifier",
+        "version": "0.1"
+      }
+    },
+    {
+      "node_id": "clause_6_1",
+      "type": "payment_terms",
+      "label": "Events of Default. Non-payment, covenant breach, and cross default trigger acceleration remedies.",
+      "span_start": 748,
+      "span_end": 849,
+      "confidence": 0.91,
+      "provenance": {
+        "tool": "clause_classifier",
+        "version": "0.1"
+      }
+    },
+    {
+      "node_id": "clause_7_1",
+      "type": "governing_law",
+      "label": "Governing Law and Venue. This Agreement is governed by New York law and venue.",
+      "span_start": 875,
+      "span_end": 957,
+      "confidence": 0.91,
+      "provenance": {
+        "tool": "clause_classifier",
+        "version": "0.1"
+      }
+    },
+    {
+      "node_id": "clause_8_1",
+      "type": "guarantees",
+      "label": "Guarantee. Parent provides an unconditional guarantee of borrower obligations.",
+      "span_start": 979,
+      "span_end": 1061,
+      "confidence": 0.9,
+      "provenance": {
+        "tool": "clause_classifier",
+        "version": "0.1"
+      }
+    }
+  ],
+  "dag_execution": {
+    "template_id": "loan_agreement_v0_1",
+    "doc_type": "loan_agreement",
+    "mode": "precision",
+    "citation_policy": {
+      "require_node_id": true,
+      "require_span": true,
+      "no_citation_no_answer": true
+    },
+    "executed_steps": [
+      "detect_headings",
+      "detect_numbered_clauses",
+      "extract_definitions",
+      "clause_classifier",
+      "obligation_extractor",
+      "playbook_compare"
+    ],
+    "trace": [
+      {
+        "step_id": "detect_headings",
+        "tool": "spine_builder.detect_headings",
+        "output_key": "headings",
+        "depends_on": [],
+        "result_count": 8
+      },
+      {
+        "step_id": "detect_numbered_clauses",
+        "tool": "spine_builder.detect_numbered_clauses",
+        "output_key": "clauses",
+        "depends_on": [
+          "detect_headings"
+        ],
+        "result_count": 8
+      },
+      {
+        "step_id": "extract_definitions",
+        "tool": "spine_builder.extract_definitions",
+        "output_key": "definitions",
+        "depends_on": [
+          "detect_numbered_clauses"
+        ],
+        "result_count": 0
+      },
+      {
+        "step_id": "clause_classifier",
+        "tool": "clause_classifier.classify",
+        "output_key": "classified_nodes",
+        "depends_on": [
+          "extract_definitions"
+        ],
+        "result_count": 16
+      },
+      {
+        "step_id": "obligation_extractor",
+        "tool": "obligation_extractor.extract",
+        "output_key": "obligations",
+        "depends_on": [
+          "clause_classifier"
+        ],
+        "result_count": 7
+      },
+      {
+        "step_id": "playbook_compare",
+        "tool": "playbook_compare.compare",
+        "output_key": "findings",
+        "depends_on": [
+          "obligation_extractor"
+        ],
+        "result_count": 13
+      }
+    ]
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "doc_type": "credit_agreement",
+  "version": "0.1",
+  "required_clauses": [
+    "payment_terms",
+    "event_of_default",
+    "financial_covenants",
+    "collateral_security",
+    "representations_and_warranties",
+    "conditions_precedent",
+    "governing_law",
+    "indemnity"
+  ],
+  "baselines": {
+    "payment_terms": {
+      "expectation": "Clear draw, repayment, and default interest mechanics.",
+      "risk_if_missing": "high"
+    },
+    "event_of_default": {
+      "expectation": "Events of default and acceleration rights are explicit.",
+      "risk_if_missing": "high"
+    },
+    "financial_covenants": {
+      "expectation": "Financial covenants and testing cadence are clearly defined.",
+      "risk_if_missing": "high"
+    },
+    "collateral_security": {
+      "expectation": "Collateral package and security perfection obligations are specified.",
+      "risk_if_missing": "high"
+    },
+    "representations_and_warranties": {
+      "expectation": "Borrower representations and warranties are complete and accurate.",
+      "risk_if_missing": "medium"
+    },
+    "conditions_precedent": {
+      "expectation": "Funding and closing conditions precedent are enumerated.",
+      "risk_if_missing": "high"
+    },
+    "governing_law": {
+      "expectation": "Approved forum and governing law are specified.",
+      "risk_if_missing": "medium"
+    }
+  },
+  "policy_rules": [
+    {
+      "id": "credit_default_events_required",
+      "severity": "high",
+      "description": "Credit agreements must define lender remedies and default triggers."
+    },
+    {
+      "id": "credit_interest_mechanics_required",
+      "severity": "high",
+      "description": "Interest rate and fee mechanics must be expressly defined."
+    }
+  ]
+}
